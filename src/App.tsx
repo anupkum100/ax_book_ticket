@@ -6,16 +6,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BookingForm from './components/bookingForm/BookingForm';
 
 import EventCard from './components/eventCard/EventCard';
-import EventList from './eventsData/eventList.json';
 import Form from 'react-bootstrap/Form';
 
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 
 const history = createHistory();
 
 // interface for Events ## Shared by EventCard Component
 export interface Events {
+  id: number,
   eventName: string,
   eventDate: string,
   availableSeats: number,
@@ -24,11 +24,18 @@ export interface Events {
 
 class App extends React.Component {
 
-  public state = { items: [] as any, isLoaded: false, searchText: undefined, selectedEvent: {} }
+  public state = {
+    allItems: [], // list of all items received 
+    items: [], // list of all items to display in the UI
+    isLoaded: false, // check if the data is received to render the component
+    searchText: undefined, 
+    selectedEvent: {} // selected eventDetails to be passed to the booking form
+  }
 
 
   public componentWillMount() {
-    history.push('/')
+    // redirect to home page when user refresh from the booking page
+    history.push('/events')
   }
 
   public componentDidMount() {
@@ -36,23 +43,32 @@ class App extends React.Component {
   }
 
   public getEventList = () => {
-    this.setState({
-      isLoaded: true,
-      items: EventList
-    });
+    // make the fetch call to get the data from db.json
+    fetch("http://localhost:8080/db")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            allItems: result.events,
+            isLoaded: true,
+            items: result.events
+          });
+        }
+      )
   }
 
+  // Handle the searching of events by checking the eventName, this works for both Upper and lowercases 
   public filterEvents = () => {
     const that = this;
     if (this.state.searchText) {
       // @ts-ignore
-      const allItems = EventList.filter((item: any) => item.eventName.toLowerCase().includes(that.state.searchText.toLowerCase()));
+      const allItems = this.state.allItems.filter((item: any) => item.eventName.toLowerCase().includes(that.state.searchText.toLowerCase()));
       this.setState({
         items: allItems
       })
     } else {
       this.setState({
-        items: EventList
+        items: this.state.allItems
       })
     }
   }
@@ -69,7 +85,8 @@ class App extends React.Component {
     this.setState({
       selectedEvent: event
     })
-    history.push(`/${event.eventName.replace(/ /g, '')}`)
+    // Redirect to the booking form when user selects any event
+    history.push(`/bookings/${event.eventName.replace(/ /g, '')}`)
   }
 
   public render() {
@@ -77,9 +94,9 @@ class App extends React.Component {
       return null
     }
     return (
-      <div className="container mt-3">
+      <div className="container pt-3">
         <Router history={history}>
-          <Route exact={true} path="/">
+          <Route exact={true} path="/events">
             <Form.Group>
               <Form.Control defaultValue={this.state.searchText} onChange={this.handleSearchChange} type="search" placeholder="SEARCH EVENTS" />
             </Form.Group>
@@ -89,7 +106,7 @@ class App extends React.Component {
             }
           </Route>
 
-          <Route path="/:eventId">
+          <Route path="/bookings/:eventId">
             <BookingForm eventInfo={this.state.selectedEvent} />
           </Route>
         </Router>

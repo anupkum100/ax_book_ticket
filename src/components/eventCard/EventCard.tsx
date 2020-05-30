@@ -25,7 +25,7 @@ const EventCard = (props: { eventList: Events[], onselectCallback: any }) => {
                                     disabled={events.availableSeats ? false : true}
                                     size="sm"
                                     variant={events.availableSeats ? 'primary' : 'link'}>
-                                    {events.availableSeats === 0 ? 'Sold Out' : 'Book Tickets'}
+                                    {events.availableSeats === 0 ? 'Sold Out' : 'Book Now'}
                                 </Button>
                         </Card.Body>
                     </div>

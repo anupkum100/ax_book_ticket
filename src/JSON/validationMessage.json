@@ -1,0 +1,14 @@
+{
+    "email": {
+        "pattern": "Invalid email",
+        "required": "Please enter your email"
+    },
+    "name": {
+        "pattern": "Only letters and spaces are allowed",
+        "required": "Please enter your name"
+    },
+    "selectedSeats": {
+        "pattern": "Number of seats selected is more than available seats",
+        "required": "Please enter the number of seats"
+    }
+}

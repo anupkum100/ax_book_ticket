@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import EventCard from './EventCard';
 
-import EventList from '../../eventsData/eventList.json';
+import EventList from '../../JSON/eventList.json';
 
 it('Event Card should render when Event Data is passedrend', () => {
     const div = document.createElement('div');
