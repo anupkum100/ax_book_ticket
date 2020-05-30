@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+}
+
+.h1,
+.h5,
+.h6,
+.form-label,
+.form-control,
+p {
+  color: #666 !important;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

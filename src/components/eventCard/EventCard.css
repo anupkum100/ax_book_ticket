@@ -1,0 +1,13 @@
+.card {
+    box-shadow: 0px 5px 15px #ccc;
+    width: 90%;
+}
+
+p,
+button.btn {
+    font-size: 10px;
+}
+
+.btn-link.disabled, .btn-link:disabled{
+    color: #ff3333;
+}
