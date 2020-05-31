@@ -12,7 +12,8 @@
     "react-scripts-ts": "3.1.0"
   },
   "scripts": {
-    "start2": "react-scripts-ts start && npm run dev-server",
+    "start-client": "react-scripts-ts start",
+    "start-server": "json-server --watch -p 8080 db.json",
     "start": "concurrently \"react-scripts-ts start\" \"json-server --watch -p 8080 db.json\"",
     "build": "react-scripts-ts build",
     "test": "concurrently \"react-scripts-ts test --env=jsdom\" \"json-server --watch -p 8080 db.json\"",

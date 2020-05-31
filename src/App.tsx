@@ -1,13 +1,18 @@
+// React Deependencies
 import * as React from 'react';
-import './App.css';
 
+// Stylings
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Components Used 
 import BookingForm from './components/bookingForm/BookingForm';
-
 import EventCard from './components/eventCard/EventCard';
+
+// React -Bootstrap Dependencies 
 import Form from 'react-bootstrap/Form';
 
+// Routing Dependency
 import { createBrowserHistory as createHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 
@@ -28,7 +33,7 @@ class App extends React.Component {
     allItems: [], // list of all items received 
     items: [], // list of all items to display in the UI
     isLoaded: false, // check if the data is received to render the component
-    searchText: undefined, 
+    searchText: undefined,
     selectedEvent: {} // selected eventDetails to be passed to the booking form
   }
 
@@ -89,6 +94,27 @@ class App extends React.Component {
     history.push(`/bookings/${event.eventName.replace(/ /g, '')}`)
   }
 
+  // Error mesage to show when the JSONserver is not UP and running 
+  public getServerErrorMessage = () => {
+    return <h5 className="text-danger text-center mt-5">Something went wrong. Make sure your JSON Server is UP and Running.
+      <a target="_blank" href="http://localhost8080/db/">Check this</a>
+    </h5>
+  }
+
+  // Show list of Events or No Events found message according to the search filter
+  public getEventsContainer = () => {
+    return this.state.items.length !== 0 ?
+      <EventCard onselectCallback={(event: Events) => this.changeSelectedEvent(event)} eventList={this.state.items} /> :
+      (!this.state.isLoaded ? this.getServerErrorMessage() : <h5 className='text-center text-danger'>No results found!</h5>)
+  }
+
+  // Render the search field
+  public getSearchField = () => {
+    return <Form.Group>
+      <Form.Control defaultValue={this.state.searchText} onChange={this.handleSearchChange} type="search" placeholder="SEARCH EVENTS" />
+    </Form.Group>
+  }
+
   public render() {
     if (!this.state.isLoaded) {
       return null
@@ -97,13 +123,8 @@ class App extends React.Component {
       <div className="container pt-3">
         <Router history={history}>
           <Route exact={true} path="/events">
-            <Form.Group>
-              <Form.Control defaultValue={this.state.searchText} onChange={this.handleSearchChange} type="search" placeholder="SEARCH EVENTS" />
-            </Form.Group>
-            {
-              this.state.items.length !== 0 ?
-                <EventCard onselectCallback={(event: Events) => this.changeSelectedEvent(event)} eventList={this.state.items} /> : <h5 className='text-center text-danger'>No results found!</h5>
-            }
+            {this.getSearchField()}
+            {this.getEventsContainer()}
           </Route>
 
           <Route path="/bookings/:eventId">

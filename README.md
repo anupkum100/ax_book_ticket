@@ -7,6 +7,8 @@ The JSON-Server is used to make API calls for local json files.
 * `npm install -g concurrently` Install concurrently globally 
 * `npm install` Install all Dependencies
 * `npm start` runs the json server at 8080 and the node server at 3000
+* `npm start-client` Will run only the client code at localhost:3000 and you will not see any data on screen as no sever is up
+* `npm start-server` Will run only the JSON server at localhost:8080/db and you will see the JSON data there 
 
 ## Data source
 * The data for the events are stored in db.json file 

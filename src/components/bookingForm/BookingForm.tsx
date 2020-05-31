@@ -1,18 +1,24 @@
+// React Deependencies
 import * as React from 'react';
 import './BookingForm.css';
 
+// React -Bootstrap Dependencies 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
+// Validation Message from separate JSON file
 import validationMessage from '../../JSON/validationMessage.json';
+
+// Routing Dependency
 import { createBrowserHistory as createHistory } from 'history';
 
-const nameRegex = /^[a-zA-Z ]*$/;
-const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const nameRegex = /^[a-zA-Z ]*$/; // Regex for the Name 
+const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // Regex for the Email id
 
+// Proprty coming from the selected Card from the parent
 interface Props {
-    eventInfo: any
+    eventInfo: any 
 }
 
 const history = createHistory();
@@ -71,11 +77,14 @@ export default class BookingForm extends React.Component<Props, {}> {
                 method: 'PUT',
             };
 
+            // Makr the API call to update the db.json file 
             fetch('http://localhost:8080/events/' + this.props.eventInfo.id, requestOptions)
                 .then(response => response.json())
                 .then(_ => this.setState({
                     isTicketBooked: true
                 }));
+
+            // logging the Ticket Details recently booked
             console.log(JSON.stringify('Congratulations ' + this.state.name + ' You have successfully booked ' + this.state.selectedSeats + ' Seat(s).'));
             console.log("Tickets Booked for", requestOptions.body)
         }
@@ -95,7 +104,7 @@ export default class BookingForm extends React.Component<Props, {}> {
         const newAttendees: any = [];
 
         for (let i = 1; i < numberOfAttendees; i++) {
-            newAttendees.push(<Form.Group className="row" controlId={'newAttendee' + i}>
+            newAttendees.push(<Form.Group key={'newAttendee' + i} className="row" controlId={'newAttendee' + i}>
                 <Form.Label className="col-xl-4 pt-2 col-sm-12">{'Name of Attendee ' + (i + 1)} :</Form.Label>
                 <Form.Control
                     required={true}
