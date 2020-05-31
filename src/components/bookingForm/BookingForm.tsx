@@ -32,7 +32,7 @@ export default class BookingForm extends React.Component<Props, {}> {
     }
 
     // Input Field Elements
-    public createFormElement = (controlId: string, label: string, type: string, placeholder: string, maxlength?: number) => {
+    public createFormElement = (controlId: string, label: string, type: string, placeholder: string) => {
         return <Form.Group className="row" controlId={controlId}>
             <Form.Label className="col-xl-3 pt-2">{label}:</Form.Label>
             <Form.Control
@@ -41,7 +41,6 @@ export default class BookingForm extends React.Component<Props, {}> {
                 defaultValue={this.state[controlId]}
                 type={type}
                 placeholder={placeholder}
-                maxLength={maxlength}
                 disabled={this.state.isTicketBooked}
             />
             {this.state[controlId + 'Error'] ? <small className='offset-md-3 text-danger'>{this.state[controlId + 'Error']}</small> : null}
@@ -49,6 +48,9 @@ export default class BookingForm extends React.Component<Props, {}> {
     }
 
     public handleChange = (e: any) => {
+        if (e.target.id === 'phoneNumber' && e.target.value.toString().length > 10) {
+            e.target.value = e.target.value.substring(0,10)
+        }
         this.setState({
             [e.target.id]: e.target.value,
         })
@@ -155,7 +157,7 @@ export default class BookingForm extends React.Component<Props, {}> {
                         <Form>
                             {this.createFormElement('name', 'Name', 'text', 'Enter Name')}
                             {this.createFormElement('email', 'Email', 'email', 'Enter Email')}
-                            {this.createFormElement('phoneNumber', 'Phone Number', 'number', 'Enter Phone Number', 10)}
+                            {this.createFormElement('phoneNumber', 'Phone Number', 'number', 'Enter Phone Number')}
 
                             <Form.Group className="row" controlId={'formBasicSeats'}>
                                 <Form.Label className="col-xl-4 pt-2">Number of Seats:</Form.Label>
